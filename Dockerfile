@@ -21,7 +21,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Código
-COPY bot.py ingest.py overstreet/ dashboard/ entrypoint.sh ./
+COPY bot.py ingest.py entrypoint.sh ./
+COPY overstreet/ ./overstreet/
+COPY dashboard/ ./dashboard/
 RUN chmod +x entrypoint.sh
 
 # Data dirs
