@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 # --- Telegram ---
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+BOT_TOKEN = os.getenv("BOT_TOKEN", "")
 
 # --- Paths (legacy — prefer infra.py for new code) ---
 _base = Path(__file__).parent.parent
