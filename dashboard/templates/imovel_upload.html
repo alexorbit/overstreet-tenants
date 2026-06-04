@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Importar imóveis — OverStreet{% endblock %}
+{% block content %}
+<div class="max-w-2xl">
+  <div class="mb-6">
+    <a href="/imoveis" class="text-sm text-slate-500 hover:text-slate-700">← Voltar</a>
+    <h1 class="text-2xl font-bold tracking-tight text-slate-900 mt-2">Importar imóveis</h1>
+    <p class="text-sm text-slate-500 mt-1">Aceita arquivos <code>.json</code> (array) ou <code>.jsonl</code> (um JSON por linha). Máx 50 MB.</p>
+  </div>
+
+  {% if error %}
+  <div class="mb-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-sm text-rose-700">{{ error }}</div>
+  {% endif %}
+
+  {% if preview %}
+  <div class="rounded-xl bg-white border border-slate-200 p-6 mb-4">
+    <h3 class="text-sm font-semibold text-slate-900 mb-2">Preview da importação</h3>
+    <p class="text-sm text-slate-600 mb-3">
+      Arquivo: <code>{{ preview.filename }}</code> · {{ preview.count }} registros encontrados.
+    </p>
+    <div class="rounded bg-slate-50 p-3 text-xs font-mono overflow-x-auto mb-4">
+      <pre>{{ preview.first | tojson(indent=2) }}</pre>
+    </div>
+    <form method="post" action="/imoveis/upload?confirm=1" enctype="multipart/form-data">
+      <input type="hidden" name="filename" value="{{ preview.filename }}">
+      <button class="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700">
+        Confirmar e importar {{ preview.count }} imóveis
+      </button>
+    </form>
+  </div>
+  {% else %}
+  <form method="post" enctype="multipart/form-data" class="rounded-xl bg-white border border-slate-200 p-6">
+    <label class="block">
+      <div class="text-sm font-medium text-slate-900 mb-2">Arquivo</div>
+      <input type="file" name="file" accept=".json,.jsonl,.ndjson" required
+             class="block w-full text-sm text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-slate-900 file:text-white hover:file:bg-slate-800 cursor-pointer">
+    </label>
+    <div class="mt-4 text-xs text-slate-500">
+      <p class="font-medium mb-1">Esquema esperado por registro:</p>
+      <pre class="rounded bg-slate-50 p-3 font-mono overflow-x-auto">{ "id": 123, "address": {"street": "Rua X", "number": "100", "district": "Centro", "city": "SP", "state": "SP"}, "property": {"bedrooms": 3, "bathrooms": 2, "sale_price": "500000"}, "raw": {"valor_locacao": "2500", "valor_condominio": "800", "finalidade_id": 1, "situacao_id": 47, "tipo_imovel_id": 72} }</pre>
+    </div>
+    <button class="mt-4 px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700">Fazer upload</button>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}

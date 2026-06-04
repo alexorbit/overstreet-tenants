@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Follow-ups — OverStreet{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold tracking-tight text-slate-900">Follow-ups</h1>
+  <a href="/followups/novo" class="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700">Novo follow-up</a>
+</div>
+
+<div class="rounded-xl bg-white border border-slate-200 overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wide">
+      <tr>
+        <th class="text-left px-4 py-3">Prazo</th>
+        <th class="text-left px-4 py-3">Tipo</th>
+        <th class="text-left px-4 py-3">Cliente</th>
+        <th class="text-left px-4 py-3">Imóvel</th>
+        <th class="text-left px-4 py-3">Status</th>
+        <th class="text-left px-4 py-3">Descrição</th>
+        <th class="text-right px-4 py-3"></th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      {% for f in items %}
+      <tr class="hover:bg-slate-50">
+        <td class="px-4 py-3 font-mono text-slate-700">{{ f.data_prazo }}</td>
+        <td class="px-4 py-3 text-slate-600">{{ f.tipo }}</td>
+        <td class="px-4 py-3 text-slate-600">{{ f.cliente_nome or '—' }}</td>
+        <td class="px-4 py-3 text-slate-600">{% if f.imovel_id %}<a href="/imoveis/{{ f.imovel_id }}" class="hover:underline">COD {{ f.imovel_id }}</a>{% else %}—{% endif %}</td>
+        <td class="px-4 py-3">
+          <span class="inline-block px-2 py-0.5 rounded text-xs font-medium
+            {% if f.status == 'pendente' %}bg-amber-100 text-amber-700
+            {% elif f.status == 'concluido' %}bg-emerald-100 text-emerald-700
+            {% else %}bg-slate-200 text-slate-600{% endif %}">{{ f.status }}</span>
+        </td>
+        <td class="px-4 py-3 text-slate-500 truncate max-w-md">{{ f.descricao or '—' }}</td>
+        <td class="px-4 py-3 text-right">
+          {% if f.status == 'pendente' %}
+          <form method="post" action="/followups/{{ f.id }}/concluir" class="inline">
+            <button class="text-xs font-medium text-emerald-700 hover:underline">Concluir</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" class="px-4 py-12 text-center text-slate-400">Nenhum follow-up.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

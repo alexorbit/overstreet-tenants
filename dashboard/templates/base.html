@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR" class="h-full bg-slate-50">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}OverStreet Admin{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
+          colors: {
+            brand: {
+              50:  '#ecfdf5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+    [x-cloak] { display: none !important; }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body class="h-full text-slate-800 antialiased">
+<div class="flex min-h-full">
+  {% include "partials/sidebar.html" %}
+  <div class="flex-1 min-w-0 flex flex-col">
+    {% include "partials/flash.html" %}
+    <main class="flex-1 p-6 lg:p-10 max-w-7xl w-full mx-auto">
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="px-10 py-4 text-xs text-slate-400 border-t border-slate-200">
+      OverStreet Admin · {{ now() }}
+    </footer>
+  </div>
+</div>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Visão Geral — OverStreet{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-8">
+  <div>
+    <h1 class="text-2xl font-bold tracking-tight text-slate-900">Visão geral</h1>
+    <p class="text-sm text-slate-500 mt-1">Olá, {{ agente_nome }}. Aqui está o resumo da operação.</p>
+  </div>
+  <div class="flex gap-2">
+    <a href="/imoveis/upload" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700 transition">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+      Importar imóveis
+    </a>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  <div class="rounded-xl bg-white border border-slate-200 p-5">
+    <div class="flex items-center justify-between">
+      <span class="text-xs font-medium uppercase tracking-wide text-slate-500">Imóveis totais</span>
+      <span class="w-2 h-2 rounded-full bg-brand-500"></span>
+    </div>
+    <div class="mt-2 text-3xl font-bold text-slate-900">{{ stats.total }}</div>
+    <div class="text-xs text-slate-500 mt-1">{{ stats.disponiveis }} disponíveis</div>
+  </div>
+
+  <div class="rounded-xl bg-white border border-slate-200 p-5">
+    <div class="flex items-center justify-between">
+      <span class="text-xs font-medium uppercase tracking-wide text-slate-500">Clientes</span>
+      <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+    </div>
+    <div class="mt-2 text-3xl font-bold text-slate-900">{{ stats.clientes }}</div>
+    <div class="text-xs text-slate-500 mt-1">cadastrados</div>
+  </div>
+
+  <div class="rounded-xl bg-white border border-slate-200 p-5">
+    <div class="flex items-center justify-between">
+      <span class="text-xs font-medium uppercase tracking-wide text-slate-500">Visitas hoje</span>
+      <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+    </div>
+    <div class="mt-2 text-3xl font-bold text-slate-900">{{ stats.visitas_hoje }}</div>
+    <div class="text-xs text-slate-500 mt-1">{{ stats.visitas_proximas }} nos próx. 7 dias</div>
+  </div>
+
+  <div class="rounded-xl bg-white border border-slate-200 p-5">
+    <div class="flex items-center justify-between">
+      <span class="text-xs font-medium uppercase tracking-wide text-slate-500">Follow-ups</span>
+      <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+    </div>
+    <div class="mt-2 text-3xl font-bold text-slate-900">{{ stats.followups_pendentes }}</div>
+    <div class="text-xs text-slate-500 mt-1">pendentes</div>
+  </div>
+</div>
+
+<div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+  <div class="rounded-xl bg-white border border-slate-200 p-6">
+    <h3 class="text-sm font-semibold text-slate-900 mb-4">Atividade recente</h3>
+    <div class="space-y-3">
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-slate-600">Mensagens hoje</span>
+        <span class="font-semibold text-slate-900">{{ stats.msgs_hoje }}</span>
+      </div>
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-slate-600">Vendidos / Alugados</span>
+        <span class="font-semibold text-slate-900">{{ stats.vendidos }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rounded-xl bg-brand-50 border border-brand-100 p-6">
+    <h3 class="text-sm font-semibold text-brand-900 mb-2">Próximos passos</h3>
+    <ul class="space-y-2 text-sm text-brand-900">
+      <li class="flex items-start gap-2">
+        <span class="text-brand-600 mt-0.5">→</span>
+        <a href="/imoveis/upload" class="hover:underline">Importe seu catálogo</a> de imóveis via JSON/JSONL.
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-brand-600 mt-0.5">→</span>
+        Configure seu bot em <a href="/settings" class="hover:underline">Configurações</a>.
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-brand-600 mt-0.5">→</span>
+        Mande <code>/start</code> no Telegram para testar o bot.
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

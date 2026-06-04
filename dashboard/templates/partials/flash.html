@@ -1,0 +1,10 @@
+{% if flash %}
+<div class="px-6 lg:px-10 pt-4">
+  <div class="max-w-7xl mx-auto rounded-lg p-3 text-sm
+    {% if flash.kind == 'success' %}bg-emerald-50 border border-emerald-200 text-emerald-700
+    {% elif flash.kind == 'error' %}bg-rose-50 border border-rose-200 text-rose-700
+    {% else %}bg-slate-50 border border-slate-200 text-slate-700{% endif %}">
+    {{ flash.message }}
+  </div>
+</div>
+{% endif %}

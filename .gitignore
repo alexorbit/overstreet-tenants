@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.so
+
+# Virtualenv
+.venv/
+venv/
+env/
+
+# Data (volume, NUNCA commitar)
+data/
+*.db
+*.db-wal
+*.db-shm
+qdrant_storage/
+whisper_cache/
+fastembed_cache/
+ingest_cache/
+
+# Env
+.env
+.env.local
+.env.production
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/

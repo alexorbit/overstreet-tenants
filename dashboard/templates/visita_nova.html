@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Nova visita — OverStreet{% endblock %}
+{% block content %}
+<div class="max-w-2xl">
+  <div class="mb-6">
+    <a href="/visitas" class="text-sm text-slate-500 hover:text-slate-700">← Voltar</a>
+    <h1 class="text-2xl font-bold tracking-tight text-slate-900 mt-2">Agendar visita</h1>
+  </div>
+
+  {% if error %}
+  <div class="mb-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-sm text-rose-700">{{ error }}</div>
+  {% endif %}
+
+  <form method="post" class="space-y-4 bg-white rounded-xl border border-slate-200 p-6">
+    <div>
+      <label class="text-sm font-medium text-slate-900">Imóvel</label>
+      <select name="imovel_id" required class="mt-2 w-full px-3 py-2 rounded-lg border border-slate-200 text-sm bg-white">
+        {% for im in imoveis %}
+        <option value="{{ im.id }}">COD {{ im.id }} — {{ im.street or '' }}, {{ im.district or '' }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label class="text-sm font-medium text-slate-900">Nome do cliente</label>
+      <input name="cliente_nome" class="mt-2 w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+    </div>
+    <div>
+      <label class="text-sm font-medium text-slate-900">Data e hora</label>
+      <input name="data_visita" type="datetime-local" required class="mt-2 w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+    </div>
+    <div>
+      <label class="text-sm font-medium text-slate-900">Notas</label>
+      <textarea name="notas" rows="3" class="mt-2 w-full px-3 py-2 rounded-lg border border-slate-200 text-sm"></textarea>
+    </div>
+    <div class="flex justify-end gap-3">
+      <a href="/visitas" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-700 text-sm font-medium hover:bg-slate-50">Cancelar</a>
+      <button class="px-5 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700">Agendar</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

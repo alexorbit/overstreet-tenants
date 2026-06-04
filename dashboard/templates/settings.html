@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Configurações — OverStreet{% endblock %}
+{% block content %}
+<div class="max-w-2xl">
+  <h1 class="text-2xl font-bold tracking-tight text-slate-900 mb-6">Configurações</h1>
+
+  {% if flash %}
+  <div class="mb-4 p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-sm text-emerald-700">{{ flash.message }}</div>
+  {% endif %}
+
+  <form method="post" class="space-y-6">
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-4">Identidade do bot</h3>
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs font-medium text-slate-600">Nome do agente</label>
+          <input name="agente_nome" value="{{ settings.agente_nome }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Máx. resultados por busca</label>
+          <input type="number" name="max_results" value="{{ settings.max_results }}" min="1" max="20" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Mensagem de boas-vindas</label>
+          <textarea name="mensagem_boas_vindas" rows="3" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">{{ settings.mensagem_boas_vindas }}</textarea>
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Telegram ID do admin</label>
+          <input name="telegram_id_admin" value="{{ settings.telegram_id_admin }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm" placeholder="5141786772">
+          <p class="text-xs text-slate-500 mt-1">Quem pode receber mensagens de debug do bot.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-4">Integrações (somente leitura)</h3>
+      <dl class="text-sm space-y-2">
+        <div class="flex justify-between"><dt class="text-slate-500">Telegram Bot Token</dt><dd class="font-mono text-slate-700">{{ '***' + (env.bot_token_last4 or '????') }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-500">NVIDIA LLM</dt><dd class="text-slate-700">{{ env.nvidia_model }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-500">Qdrant</dt><dd class="text-slate-700">{{ env.qdrant_url }}</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-500">Groq (Whisper)</dt><dd class="text-emerald-700 font-medium">conectado</dd></div>
+      </dl>
+    </div>
+
+    <div class="flex justify-end">
+      <button class="px-5 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700">Salvar</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

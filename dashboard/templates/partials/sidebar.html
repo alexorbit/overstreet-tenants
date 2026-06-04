@@ -1,0 +1,52 @@
+<aside class="hidden lg:flex w-64 flex-col bg-slate-900 text-slate-100 min-h-screen">
+  <div class="px-6 py-6 border-b border-slate-800">
+    <a href="/" class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold">O</div>
+      <div>
+        <div class="font-semibold text-white">OverStreet</div>
+        <div class="text-xs text-slate-400">Admin</div>
+      </div>
+    </a>
+  </div>
+
+  <nav class="flex-1 px-3 py-4 space-y-1">
+    {% set page_id = page | default('dashboard') %}
+    <a href="/" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+       {% if page_id == 'dashboard' %}bg-slate-800 text-white font-medium{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %}">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Visão geral
+    </a>
+    <a href="/imoveis" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+       {% if page_id == 'imoveis' %}bg-slate-800 text-white font-medium{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %}">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+      Imóveis
+    </a>
+    <a href="/clientes" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+       {% if page_id == 'clientes' %}bg-slate-800 text-white font-medium{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %}">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+      Clientes
+    </a>
+    <a href="/visitas" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+       {% if page_id == 'visitas' %}bg-slate-800 text-white font-medium{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %}">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Visitas
+    </a>
+    <a href="/followups" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+       {% if page_id == 'followups' %}bg-slate-800 text-white font-medium{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %}">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+      Follow-ups
+    </a>
+    <a href="/settings" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+       {% if page_id == 'settings' %}bg-slate-800 text-white font-medium{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %}">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      Configurações
+    </a>
+  </nav>
+
+  <div class="px-3 py-4 border-t border-slate-800">
+    <a href="/logout" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      Sair
+    </a>
+  </div>
+</aside>

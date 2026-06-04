@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block title %}{% if is_new %}Novo{% else %}Editar{% endif %} imóvel — OverStreet{% endblock %}
+{% block content %}
+<div class="max-w-3xl">
+  <div class="mb-6">
+    <a href="/imoveis" class="text-sm text-slate-500 hover:text-slate-700">← Voltar</a>
+    <h1 class="text-2xl font-bold tracking-tight text-slate-900 mt-2">
+      {% if is_new %}Novo imóvel{% else %}Editar imóvel #{{ item.id }}{% endif %}
+    </h1>
+  </div>
+
+  {% if error %}
+  <div class="mb-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-sm text-rose-700">{{ error }}</div>
+  {% endif %}
+
+  <form method="post" class="space-y-6">
+    <!-- Endereço -->
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-4">Endereço</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="md:col-span-2">
+          <label class="text-xs font-medium text-slate-600">Rua</label>
+          <input name="street" value="{{ item.street or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Número</label>
+          <input name="number" value="{{ item.number or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Bairro</label>
+          <input name="district" value="{{ item.district or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Cidade</label>
+          <input name="city" value="{{ item.city or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">UF</label>
+          <input name="state" value="{{ item.state or '' }}" maxlength="2" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">CEP</label>
+          <input name="zip" value="{{ item.zip or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div class="md:col-span-2">
+          <label class="text-xs font-medium text-slate-600">Complemento</label>
+          <input name="complement" value="{{ item.complement or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Referência</label>
+          <input name="reference" value="{{ item.reference or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+      </div>
+    </div>
+
+    <!-- Características -->
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-4">Características</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div>
+          <label class="text-xs font-medium text-slate-600">Dormitórios</label>
+          <input type="number" name="bedrooms" value="{{ item.bedrooms or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Suítes</label>
+          <input type="number" name="suites" value="{{ item.suites or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Banheiros</label>
+          <input type="number" name="bathrooms" value="{{ item.bathrooms or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Vagas</label>
+          <input type="number" name="garage" value="{{ item.garage or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Área construída (m²)</label>
+          <input type="number" step="0.01" name="built_area" value="{{ item.built_area or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Área útil (m²)</label>
+          <input type="number" step="0.01" name="area_util" value="{{ item.area_util or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Área terreno (m²)</label>
+          <input type="number" step="0.01" name="land_area" value="{{ item.land_area or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Tipo</label>
+          <input name="property_type" value="{{ item.property_type or '' }}" placeholder="Apartamento, Casa..." class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+      </div>
+    </div>
+
+    <!-- Valores -->
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-4">Valores & finalidade</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="text-xs font-medium text-slate-600">Finalidade</label>
+          <select name="finalidade" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm bg-white">
+            <option value="Venda" {% if item.finalidade == 'Venda' %}selected{% endif %}>Venda</option>
+            <option value="Locacao" {% if item.finalidade == 'Locacao' %}selected{% endif %}>Locação</option>
+            <option value="Venda/Locacao" {% if item.finalidade == 'Venda/Locacao' %}selected{% endif %}>Venda / Locação</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Situação</label>
+          <select name="situacao" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm bg-white">
+            <option value="Disponivel" {% if item.situacao == 'Disponivel' or not item.situacao %}selected{% endif %}>Disponível</option>
+            <option value="Reservado" {% if item.situacao == 'Reservado' %}selected{% endif %}>Reservado</option>
+            <option value="Vendido/Alugado" {% if item.situacao == 'Vendido/Alugado' %}selected{% endif %}>Vendido/Alugado</option>
+          </select>
+        </div>
+        <div></div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Preço venda (R$)</label>
+          <input name="sale_price" value="{{ item.sale_price or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm" placeholder="R$ 0,00">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Aluguel (R$)</label>
+          <input name="rental_price" value="{{ item.rental_price or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm" placeholder="R$ 0,00">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Condomínio (R$)</label>
+          <input name="condo_fee" value="{{ item.condo_fee or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">IPTU (R$)</label>
+          <input name="iptu" value="{{ item.iptu or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+      </div>
+    </div>
+
+    <!-- Proprietário + descrição -->
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-4">Proprietário & descrição</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs font-medium text-slate-600">Nome</label>
+          <input name="owner_name" value="{{ item.owner_name or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">E-mail</label>
+          <input type="email" name="owner_email" value="{{ item.owner_email or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Telefone</label>
+          <input name="owner_phone" value="{{ item.owner_phone or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Celular</label>
+          <input name="owner_mobile" value="{{ item.owner_mobile or '' }}" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">
+        </div>
+        <div class="md:col-span-2">
+          <label class="text-xs font-medium text-slate-600">Descrição</label>
+          <textarea name="description" rows="5" class="mt-1 w-full px-3 py-2 rounded border border-slate-200 text-sm">{{ item.description or '' }}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-3">
+      <a href="/imoveis" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-700 text-sm font-medium hover:bg-slate-50">Cancelar</a>
+      <button class="px-5 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700">Salvar</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Imóveis — OverStreet{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-bold tracking-tight text-slate-900">Imóveis</h1>
+    <p class="text-sm text-slate-500 mt-1">{{ total }} imóveis no total</p>
+  </div>
+  <div class="flex gap-2">
+    <form method="post" action="/imoveis/reindex" class="inline">
+      <button class="px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-700 text-sm font-medium hover:bg-slate-50">
+        Reindexar FTS
+      </button>
+    </form>
+    <a href="/imoveis/upload" class="px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-700 text-sm font-medium hover:bg-slate-50">
+      Importar JSON
+    </a>
+    <a href="/imoveis/novo" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+      Novo imóvel
+    </a>
+  </div>
+</div>
+
+<form method="get" class="mb-4 flex gap-2">
+  <input type="text" name="q" value="{{ q }}" placeholder="Buscar por descrição, rua, bairro..."
+         class="flex-1 px-4 py-2 rounded-lg border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+  <select name="situacao" class="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm">
+    <option value="">Todas situações</option>
+    <option value="Disponivel" {% if situacao == 'Disponivel' %}selected{% endif %}>Disponível</option>
+    <option value="Reservado" {% if situacao == 'Reservado' %}selected{% endif %}>Reservado</option>
+    <option value="Vendido/Alugado" {% if situacao == 'Vendido/Alugado' %}selected{% endif %}>Vendido/Alugado</option>
+  </select>
+  <button class="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium">Filtrar</button>
+</form>
+
+<div class="rounded-xl bg-white border border-slate-200 overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wide">
+      <tr>
+        <th class="text-left px-4 py-3">COD</th>
+        <th class="text-left px-4 py-3">Endereço</th>
+        <th class="text-left px-4 py-3">Bairro</th>
+        <th class="text-left px-4 py-3">Tipo</th>
+        <th class="text-right px-4 py-3">Área</th>
+        <th class="text-right px-4 py-3">Dorms</th>
+        <th class="text-right px-4 py-3">Venda</th>
+        <th class="text-right px-4 py-3">Aluguel</th>
+        <th class="text-left px-4 py-3">Situação</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      {% for it in items %}
+      <tr class="hover:bg-slate-50 cursor-pointer" onclick="location.href='/imoveis/{{ it.id }}'">
+        <td class="px-4 py-3 font-mono font-semibold text-slate-900">#{{ it.id }}</td>
+        <td class="px-4 py-3 text-slate-700">{{ (it.street or '—') }}{% if it.number %}, {{ it.number }}{% endif %}</td>
+        <td class="px-4 py-3 text-slate-600">{{ it.district or '—' }}</td>
+        <td class="px-4 py-3 text-slate-600">{{ it.property_type or '—' }}</td>
+        <td class="px-4 py-3 text-right text-slate-600">{{ it.built_area or '—' }}{% if it.built_area %}m²{% endif %}</td>
+        <td class="px-4 py-3 text-right text-slate-600">{{ it.bedrooms or '—' }}</td>
+        <td class="px-4 py-3 text-right text-slate-700 font-medium">{{ fmt_brl(it.sale_price) }}</td>
+        <td class="px-4 py-3 text-right text-slate-700 font-medium">{{ fmt_brl(it.rental_price) }}</td>
+        <td class="px-4 py-3">
+          <span class="inline-block px-2 py-0.5 rounded text-xs font-medium
+            {% if it.situacao == 'Disponivel' %}bg-emerald-100 text-emerald-700
+            {% elif it.situacao == 'Reservado' %}bg-amber-100 text-amber-700
+            {% elif it.situacao and 'Vend' in it.situacao or it.situacao and 'Alug' in it.situacao %}bg-slate-200 text-slate-600
+            {% else %}bg-slate-100 text-slate-600{% endif %}">
+            {{ it.situacao or '—' }}
+          </span>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="9" class="px-4 py-12 text-center text-slate-400">Nenhum imóvel encontrado.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if pages > 1 %}
+<div class="flex items-center justify-between mt-4 text-sm">
+  <span class="text-slate-500">Página {{ page }} de {{ pages }}</span>
+  <div class="flex gap-2">
+    {% if page > 1 %}<a href="?q={{ q }}&situacao={{ situacao }}&page={{ page-1 }}" class="px-3 py-1.5 rounded border border-slate-200 bg-white hover:bg-slate-50">Anterior</a>{% endif %}
+    {% if page < pages %}<a href="?q={{ q }}&situacao={{ situacao }}&page={{ page+1 }}" class="px-3 py-1.5 rounded border border-slate-200 bg-white hover:bg-slate-50">Próxima</a>{% endif %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

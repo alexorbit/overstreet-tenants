@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Imóvel #{{ item.id }} — OverStreet{% endblock %}
+{% block content %}
+<div class="mb-6">
+  <a href="/imoveis" class="text-sm text-slate-500 hover:text-slate-700">← Voltar</a>
+  <div class="flex items-start justify-between mt-2">
+    <div>
+      <h1 class="text-2xl font-bold tracking-tight text-slate-900">Imóvel #{{ item.id }}</h1>
+      <p class="text-sm text-slate-500 mt-1">{{ item.street or '' }}{% if item.number %}, {{ item.number }}{% endif %} — {{ item.district or '' }}, {{ item.city or '' }}/{{ item.state or '' }}</p>
+    </div>
+    <div class="flex gap-2">
+      <a href="/imoveis/{{ item.id }}/editar" class="px-3 py-2 rounded-lg border border-slate-200 text-slate-700 text-sm font-medium hover:bg-slate-50">Editar</a>
+      <form method="post" action="/imoveis/{{ item.id }}/deletar" onsubmit="return confirm('Deletar imóvel #{{ item.id }}?')">
+        <button class="px-3 py-2 rounded-lg border border-rose-200 text-rose-700 text-sm font-medium hover:bg-rose-50">Deletar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="lg:col-span-2 space-y-4">
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-3">Características</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+        <div><div class="text-xs text-slate-500">Dormitórios</div><div class="font-semibold text-slate-900">{{ item.bedrooms or '—' }}</div></div>
+        <div><div class="text-xs text-slate-500">Suítes</div><div class="font-semibold text-slate-900">{{ item.suites or '—' }}</div></div>
+        <div><div class="text-xs text-slate-500">Banheiros</div><div class="font-semibold text-slate-900">{{ item.bathrooms or '—' }}</div></div>
+        <div><div class="text-xs text-slate-500">Vagas</div><div class="font-semibold text-slate-900">{{ item.garage or '—' }}</div></div>
+        <div><div class="text-xs text-slate-500">Área construída</div><div class="font-semibold text-slate-900">{% if item.built_area %}{{ item.built_area }} m²{% else %}—{% endif %}</div></div>
+        <div><div class="text-xs text-slate-500">Área útil</div><div class="font-semibold text-slate-900">{% if item.area_util %}{{ item.area_util }} m²{% else %}—{% endif %}</div></div>
+        <div><div class="text-xs text-slate-500">Tipo</div><div class="font-semibold text-slate-900">{{ item.property_type or '—' }}</div></div>
+        <div><div class="text-xs text-slate-500">Finalidade</div><div class="font-semibold text-slate-900">{{ item.finalidade or '—' }}</div></div>
+      </div>
+    </div>
+
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-3">Descrição</h3>
+      <p class="text-sm text-slate-700 whitespace-pre-line">{{ item.description or 'Sem descrição.' }}</p>
+    </div>
+
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-3">Proprietário</h3>
+      <div class="text-sm space-y-1">
+        <div><span class="text-slate-500">Nome:</span> <span class="text-slate-900">{{ item.owner_name or '—' }}</span></div>
+        <div><span class="text-slate-500">E-mail:</span> <span class="text-slate-900">{{ item.owner_email or '—' }}</span></div>
+        <div><span class="text-slate-500">Telefone:</span> <span class="text-slate-900">{{ item.owner_phone or '—' }}</span></div>
+        <div><span class="text-slate-500">Celular:</span> <span class="text-slate-900">{{ item.owner_mobile or '—' }}</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-3">Valores</h3>
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between"><span class="text-slate-500">Venda</span><span class="font-semibold text-slate-900">{{ fmt_brl(item.sale_price) }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Aluguel</span><span class="font-semibold text-slate-900">{{ fmt_brl(item.rental_price) }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Condomínio</span><span class="text-slate-900">{{ fmt_brl(item.condo_fee) }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">IPTU</span><span class="text-slate-900">{{ fmt_brl(item.iptu) }}</span></div>
+      </div>
+    </div>
+
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-3">Situação</h3>
+      <div class="text-sm">
+        <span class="inline-block px-2 py-0.5 rounded text-xs font-medium
+          {% if item.situacao == 'Disponivel' %}bg-emerald-100 text-emerald-700
+          {% elif item.situacao == 'Reservado' %}bg-amber-100 text-amber-700
+          {% else %}bg-slate-200 text-slate-600{% endif %}">
+          {{ item.situacao or '—' }}
+        </span>
+      </div>
+    </div>
+
+    {% if fotos %}
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <h3 class="text-sm font-semibold text-slate-900 mb-3">Fotos ({{ fotos|length }})</h3>
+      <div class="grid grid-cols-2 gap-2">
+        {% for f in fotos %}
+        <div class="aspect-square rounded bg-slate-100 flex items-center justify-center text-xs text-slate-400">foto</div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
